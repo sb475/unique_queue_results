@@ -39,6 +39,7 @@ class FrameworkTask:
         else:
             return FrameworkResults.map.pop(self.task_id)
 
+
 def get_pending_tasks(task_queue: queue.Queue):
     """Pull any tasks in queue and reutrn an array of Tasks"""
     received_tasks = []
@@ -55,27 +56,26 @@ def get_pending_tasks(task_queue: queue.Queue):
         return None
 
 
-    
 async def proccess_pending_tasks(task_queue: queue.Queue):
     """This function calls helper function to get items in queue and create a task to run task in executor
     without blocking."""
-    
-    
+
     loop = asyncio.get_running_loop()
     tasks_to_run = get_pending_tasks(task_queue)
     if tasks_to_run is None:
-        await asyncio.sleep(.5)
+        await asyncio.sleep(0.5)
     else:
         loop.create_task(run_tasks_in_executor(loop, tasks_to_run))
 
-       
+
 async def run_tasks_in_executor(loop, task_list):
     """Assigns the return of task run in executor to dictionary, this allows specific results to be identified instead of
     standard"""
     max_threads: int = multiprocessing.cpu_count()
     with ThreadPoolExecutor(max_workers=max_threads) as executor:
-           
-            # running_tasks = [map_and_run_task(loop, executor, task) for task in tasks_to_run]
-            for task in task_list:
-                FrameworkResults.map[task.task_id] = await loop.run_in_executor(executor, task.run_task)
 
+        # running_tasks = [map_and_run_task(loop, executor, task) for task in tasks_to_run]
+        for task in task_list:
+            FrameworkResults.map[task.task_id] = await loop.run_in_executor(
+                executor, task.run_task
+            )
