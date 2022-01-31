@@ -1,0 +1,48 @@
+[tool.poetry]
+name = "zoe_framework"
+version = "0.1.0"
+description = "Program to assist pentesters and bug bounty hunters with a large scale tracking of potential targets. "
+authors = ["Simon Brown <sb476.dev@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+prompt-toolkit = "^3.0.24"
+pytest = "^6.2.5"
+aiofile = "^3.7.4"
+motor = "^2.5.1"
+typing-extensions = "^4.0.1"
+docker = "^5.0.3"
+bandit = "^1.7.1"
+
+[tool.poetry.dev-dependencies]
+mypy = "^0.910"
+flake8 = "^4.0.1"
+black = "^21.9b0"
+pre-commit = "^2.15.0"
+shiv = "^0.5.2"
+
+[tool.black]
+target-version = ["py38"]
+line-length = 88
+exclude = "build|.venv"
+
+[tool.mypy]
+python_version = "3.10"
+exclude = "(build|.venv)"
+
+[tool.pytest]
+testpaths = "test"
+
+ignore_missing_imports = true
+show_traceback = true
+no_implicit_optional = true
+warn_no_return = true
+warn_redundant_casts = true
+warn_return_any = true
+warn_unused_configs = true
+warn_unused_ignores = true
+warn_unreachable = true
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
